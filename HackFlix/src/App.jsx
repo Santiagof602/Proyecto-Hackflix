@@ -1,16 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import RatingFilter from "./components/RatingFilter";
+import MovieGallery from "./components/MovieGallery";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
     <>
-
+      <Navbar />
+      <Hero />
+      <RatingFilter rating={2} />
+      <MovieGallery />
     </>
-  )
+  );
 }
-
-export default App

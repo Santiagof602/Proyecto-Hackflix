@@ -1,0 +1,6 @@
+.hero {
+  background-image: url("./banner.jpg"); /* colocá una imagen de fondo en public */
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+}
