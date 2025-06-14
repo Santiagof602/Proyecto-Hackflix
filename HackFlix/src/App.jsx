@@ -1,15 +1,15 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import RatingFilter from "./components/RatingFilter";
 import MovieGallery from "./components/MovieGallery";
+import MovieCarousel from "./components/MovieCarousel";
 
 export default function App() {
   return (
     <>
       <Navbar />
       <Hero />
-      <RatingFilter rating={2} />
       <MovieGallery />
+      <MovieCarousel />
     </>
   );
 }
