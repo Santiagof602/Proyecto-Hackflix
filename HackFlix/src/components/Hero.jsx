@@ -2,9 +2,11 @@ import "./Hero.css";
 
 export default function Hero() {
   return (
-    <div className="hero text-white d-flex flex-column justify-content-center align-items-center text-center">
-      <h1>¡Tus películas favoritas!</h1>
-      <p>Disfrutá de los mejores títulos del cine internacional.</p>
-    </div>
+    <header className="hero d-flex flex-column justify-content-center align-items-center text-center text-white">
+      <h1 className="display-3 fw-bold">¡Tus películas favoritas!</h1>
+      <p className="lead">
+        Disfrutá de los mejores títulos del cine internacional.
+      </p>
+    </header>
   );
 }
