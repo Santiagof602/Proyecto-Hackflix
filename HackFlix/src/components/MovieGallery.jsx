@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import RatingFilter from "./RatingFilter";
+import MovieModal from "./MovieModal";
 import "./MovieGallery.css";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -9,7 +10,10 @@ export default function MovieGallery() {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [minRating, setMinRating] = useState(0); // rating mínimo
+  const [minRating, setMinRating] = useState(0);
+
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     resetAndFetch();
@@ -37,6 +41,16 @@ export default function MovieGallery() {
     if (res.page >= res.total_pages) setHasMore(false);
   };
 
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedMovie(null);
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="movie-gallery container py-4">
       <h2 className="text-white mb-4">Películas</h2>
@@ -52,7 +66,12 @@ export default function MovieGallery() {
       >
         <div className="row">
           {movies.map((movie) => (
-            <div className="col-6 col-md-3 mb-4" key={movie.id}>
+            <div
+              className="col-6 col-md-3 mb-4"
+              key={movie.id}
+              onClick={() => handleMovieClick(movie)}
+              style={{ cursor: "pointer" }}
+            >
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
@@ -63,6 +82,8 @@ export default function MovieGallery() {
           ))}
         </div>
       </InfiniteScroll>
+
+      {isModalOpen && <MovieModal movie={selectedMovie} onClose={closeModal} />}
     </div>
   );
 }

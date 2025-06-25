@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./MovieCarousel.css";
+import MovieModal from "./MovieModal";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const API_URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=28&language=es-ES&page=1`;

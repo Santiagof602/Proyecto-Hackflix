@@ -6,7 +6,7 @@ export default function RatingFilter({ onChange }) {
 
   const handleRating = (rate) => {
     setRating(rate);
-    const minRating = rate / 10; // convierte 50 a 5.0, etc.
+    const minRating = rate / 10;
     onChange(minRating);
   };
 
