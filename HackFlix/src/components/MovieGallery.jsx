@@ -1,96 +1,68 @@
 import { useEffect, useState } from "react";
-import { Rating } from "react-simple-star-rating";
+import InfiniteScroll from "react-infinite-scroll-component";
+import RatingFilter from "./RatingFilter";
+import "./MovieGallery.css";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-function MovieGallery() {
+export default function MovieGallery() {
   const [movies, setMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [ratingFilter, setRatingFilter] = useState(0);
-  const [page, setPage] = useState(1); // Página actual
-  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [minRating, setMinRating] = useState(0); // rating mínimo
 
   useEffect(() => {
-    fetchMovies(page);
-  }, [page]);
+    resetAndFetch();
+  }, [minRating]);
 
-  const fetchMovies = async (pageToFetch) => {
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}`
-      );
-      const data = await res.json();
-      const newMovies =
-        data.results?.filter((movie) => movie.poster_path) || [];
-      const updatedMovies = [...movies, ...newMovies];
-      setMovies(updatedMovies);
-      applyRatingFilter(updatedMovies, ratingFilter);
-    } catch (error) {
-      console.error("Error al cargar películas:", error);
-    } finally {
-      setLoading(false);
-    }
+  const resetAndFetch = async () => {
+    setPage(1);
+    setHasMore(true);
+    const res = await fetchMovies(1, minRating);
+    setMovies(res.results);
+    if (res.page >= res.total_pages) setHasMore(false);
   };
 
-  const applyRatingFilter = (allMovies, filter) => {
-    if (filter === 0) {
-      setFilteredMovies(allMovies);
-    } else {
-      const minRating = filter * 2;
-      const filtered = allMovies.filter(
-        (movie) => movie.vote_average >= minRating
-      );
-      setFilteredMovies(filtered);
-    }
+  const fetchMovies = async (pageToFetch, rating) => {
+    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&page=${pageToFetch}&vote_average.gte=${rating}`;
+    const res = await fetch(url);
+    return await res.json();
   };
 
-  useEffect(() => {
-    applyRatingFilter(movies, ratingFilter);
-  }, [ratingFilter]);
+  const fetchMoreMovies = async () => {
+    const nextPage = page + 1;
+    const res = await fetchMovies(nextPage, minRating);
+    setMovies((prev) => [...prev, ...res.results]);
+    setPage(nextPage);
+    if (res.page >= res.total_pages) setHasMore(false);
+  };
 
   return (
-    <div className="container text-center my-5">
-      <h5>Filtrar por rating:</h5>
-      <div className="d-flex justify-content-center align-items-center mb-4">
-        <Rating
-          onClick={(rate) => {
-            setRatingFilter(rate);
-            applyRatingFilter(movies, rate);
-          }}
-          initialValue={ratingFilter}
-          size={25}
-          allowFraction={false}
-        />
-        <span className="ms-2">& Más</span>
-      </div>
-
-      {filteredMovies.length === 0 ? (
-        <p>No se encontraron películas con el rating seleccionado.</p>
-      ) : (
-        <div className="row justify-content-center">
-          {filteredMovies.map((movie) => (
-            <div key={movie.id} className="col-md-3 col-sm-6 mb-4">
+    <div className="movie-gallery container py-4">
+      <h2 className="text-white mb-4">Películas</h2>
+      <RatingFilter onChange={(newRating) => setMinRating(newRating)} />
+      <InfiniteScroll
+        dataLength={movies.length}
+        next={fetchMoreMovies}
+        hasMore={hasMore}
+        loader={<h4 className="text-white">Cargando más películas...</h4>}
+        endMessage={
+          <p className="text-white text-center">¡No hay más películas!</p>
+        }
+      >
+        <div className="row">
+          {movies.map((movie) => (
+            <div className="col-6 col-md-3 mb-4" key={movie.id}>
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                className="img-fluid rounded shadow"
                 alt={movie.title}
+                className="img-fluid rounded shadow"
               />
-              <p className="mt-2">{movie.title}</p>
+              <p className="text-white mt-2">{movie.title}</p>
             </div>
           ))}
         </div>
-      )}
-
-      <button
-        onClick={() => setPage((prev) => prev + 1)}
-        className="btn btn-primary mt-4"
-        disabled={loading}
-      >
-        {loading ? "Cargando..." : "Cargar más películas"}
-      </button>
+      </InfiniteScroll>
     </div>
   );
 }
-
-export default MovieGallery;

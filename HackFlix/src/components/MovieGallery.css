@@ -1,3 +1,12 @@
 .movie-poster:hover {
   transform: scale(1.05);
 }
+.movie-gallery {
+  min-height: 100vh;
+}
+img {
+  transition: transform 0.2s;
+}
+img:hover {
+  transform: scale(1.05);
+}
