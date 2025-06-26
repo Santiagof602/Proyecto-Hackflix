@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -20,9 +21,9 @@ export default function Navbar() {
       }`}
     >
       <span className="navbar-brand text-white fs-4">Hackflix</span>
-      <a href="#" className="nav-link text-white ms-auto">
+      <Link to="/" className="nav-link text-white ms-auto">
         Home
-      </a>
+      </Link>
     </nav>
   );
 }

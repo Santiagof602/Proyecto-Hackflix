@@ -5,6 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   z-index: 999;
   padding: 1rem;
 }
@@ -12,20 +13,18 @@
 .modal-content {
   display: flex;
   align-items: center;
-  background: #000000;
-  color: rgb(255, 255, 255);
+  background: #111;
+  color: white;
   padding: 2rem;
   max-width: 600px;
   width: 100%;
   border-radius: 10px;
-
   position: relative;
   text-align: center;
 }
 
 .modal-poster {
-  width: 50%;
-  height: auto;
+  width: 35%;
   border-radius: 10px;
 }
 
