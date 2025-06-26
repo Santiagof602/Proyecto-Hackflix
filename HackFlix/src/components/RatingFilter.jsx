@@ -11,7 +11,7 @@ function RatingFilter({ onChange }) {
       <h5 className="text-white">Filtrar por rating:</h5>
       <div className="d-flex justify-content-center align-items-center">
         <Rating onClick={handleRatingChange} size={25} allowFraction={false} />
-        <span className="ms-2 text-white">& Más</span>
+        <span className="ms-2 text-white"></span>
       </div>
     </div>
   );
