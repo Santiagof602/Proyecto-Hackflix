@@ -1,19 +1,20 @@
-import { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
-export default function RatingFilter({ onChange }) {
-  const [rating, setRating] = useState(0);
-
-  const handleRating = (rate) => {
-    setRating(rate);
-    const minRating = rate / 10;
-    onChange(minRating);
+function RatingFilter({ onChange }) {
+  const handleRatingChange = (value) => {
+    const tmdbRating = value * 2;
+    onChange(tmdbRating);
   };
 
   return (
-    <div className="text-white mb-4">
-      <p>Filtrar por puntuación mínima:</p>
-      <Rating onClick={handleRating} ratingValue={rating} size={25} />
+    <div className="text-center mb-4">
+      <h5 className="text-white">Filtrar por rating:</h5>
+      <div className="d-flex justify-content-center align-items-center">
+        <Rating onClick={handleRatingChange} size={25} allowFraction={false} />
+        <span className="ms-2 text-white"></span>
+      </div>
     </div>
   );
 }
+
+export default RatingFilter;

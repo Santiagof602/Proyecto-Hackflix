@@ -11,9 +11,7 @@ export default function MovieGallery() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [minRating, setMinRating] = useState(0);
-
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     resetAndFetch();
@@ -28,7 +26,7 @@ export default function MovieGallery() {
   };
 
   const fetchMovies = async (pageToFetch, rating) => {
-    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&page=${pageToFetch}&vote_average.gte=${rating}`;
+    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&vote_average.gte=${rating}`;
     const res = await fetch(url);
     return await res.json();
   };
@@ -41,36 +39,27 @@ export default function MovieGallery() {
     if (res.page >= res.total_pages) setHasMore(false);
   };
 
-  const handleMovieClick = (movie) => {
-    setSelectedMovie(movie);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectedMovie(null);
-    setIsModalOpen(false);
-  };
-
   return (
     <div className="movie-gallery container py-4">
       <h2 className="text-white mb-4">Películas</h2>
-      <RatingFilter onChange={(newRating) => setMinRating(newRating)} />
+      <RatingFilter onChange={(r) => setMinRating(r)} />
+
       <InfiniteScroll
         dataLength={movies.length}
         next={fetchMoreMovies}
         hasMore={hasMore}
-        loader={<h4 className="text-white">Cargando más películas...</h4>}
+        loader={<h4 className="text-white">Cargando más...</h4>}
         endMessage={
-          <p className="text-white text-center">¡No hay más películas!</p>
+          <p className="text-white text-center">No hay más películas.</p>
         }
       >
         <div className="row">
           {movies.map((movie) => (
             <div
-              className="col-6 col-md-3 mb-4"
               key={movie.id}
-              onClick={() => handleMovieClick(movie)}
+              className="col-6 col-md-3 mb-4"
               style={{ cursor: "pointer" }}
+              onClick={() => setSelectedMovie(movie)}
             >
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -83,7 +72,12 @@ export default function MovieGallery() {
         </div>
       </InfiniteScroll>
 
-      {isModalOpen && <MovieModal movie={selectedMovie} onClose={closeModal} />}
+      {selectedMovie && (
+        <MovieModal
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
+      )}
     </div>
   );
 }
