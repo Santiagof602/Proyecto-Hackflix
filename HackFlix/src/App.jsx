@@ -3,6 +3,8 @@ import MovieGallery from "./components/MovieGallery";
 import MovieDetails from "./components/MovieDetails";
 import SearchPage from "./components/SearchPage"; //
 import NotFound from "./components/NotFound";
+import Generos from "./components/Generos";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App() {

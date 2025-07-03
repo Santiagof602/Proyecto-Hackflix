@@ -32,6 +32,11 @@ function NavBar() {
                 Buscar
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/Generos">
+                Generos
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
