@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useSearch } from "./Search/SearchContext.jsx";
 
 function NavBar() {
+  const { setSearchTerm } = useSearch();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -28,14 +30,19 @@ function NavBar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/buscar">
-                Buscar
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link className="nav-link" to="/Generos">
                 Generos
               </Link>
+            </li>
+            <li className="nav-item">
+                <i className="bi bi-search"></i>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Buscar..."
+                  aria-label="Buscar"
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
             </li>
           </ul>
         </div>

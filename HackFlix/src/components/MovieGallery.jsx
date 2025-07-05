@@ -3,10 +3,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import RatingFilter from "./RatingFilter";
 import MovieModal from "./MovieModal";
 import "./MovieGallery.css";
+import { useSearch } from "./Search/SearchContext.jsx";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 export default function MovieGallery() {
+  const { searchTerm } = useSearch();
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -15,7 +17,7 @@ export default function MovieGallery() {
 
   useEffect(() => {
     resetAndFetch();
-  }, [minRating]);
+  }, [minRating, searchTerm]);
 
   const resetAndFetch = async () => {
     setPage(1);
@@ -26,7 +28,12 @@ export default function MovieGallery() {
   };
 
   const fetchMovies = async (pageToFetch, rating) => {
-    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&vote_average.gte=${rating}`;
+    let url;
+    if (searchTerm.trim()) {
+      url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&query=${encodeURIComponent(searchTerm)}`;
+    } else {
+      url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&vote_average.gte=${rating}`;
+    }
     const res = await fetch(url);
     return await res.json();
   };
