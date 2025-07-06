@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import RatingFilter from "./RatingFilter";
-import MovieModal from "./MovieModal";
 import "./MovieGallery.css";
-
+import InfiniteScroll from "react-infinite-scroll-component";
+import RatingFilter from "../../components/RatingFilter/RatingFilter.jsx";
+import MovieModal from "../../components/MovieModal/MovieModal.jsx";
+import { useSearch } from "../../components/Search/SearchContext.jsx";
+import MovieCard from "../../components/MovieCard/MovieCard.jsx";
+import Banner from "../../components/Banner/Banner"
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-export default function MovieGallery() {
+export default function MovieGallery({ genreId = null}) {
+  const { searchTerm } = useSearch();
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -15,7 +18,7 @@ export default function MovieGallery() {
 
   useEffect(() => {
     resetAndFetch();
-  }, [minRating]);
+  }, [minRating, searchTerm, genreId]);
 
   const resetAndFetch = async () => {
     setPage(1);
@@ -26,7 +29,18 @@ export default function MovieGallery() {
   };
 
   const fetchMovies = async (pageToFetch, rating) => {
-    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&vote_average.gte=${rating}`;
+    let url;
+
+    if (searchTerm.trim()) {
+      url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&query=${encodeURIComponent(
+        searchTerm
+      )}`;
+    } else if (genreId) {
+      url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&with_genres=${genreId}`;
+    } else {
+      url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&vote_average.gte=${rating}`;
+    }
+
     const res = await fetch(url);
     return await res.json();
   };
@@ -41,8 +55,9 @@ export default function MovieGallery() {
 
   return (
     <div className="movie-gallery container py-4">
-      <h2 className="text-white mb-4">Películas</h2>
-      <RatingFilter onChange={(r) => setMinRating(r)} />
+      <Banner/>
+      {searchTerm.trim() ? <h2 className="text-white">Resultados para "{searchTerm}"</h2>
+      : !genreId && <RatingFilter onChange={(r) => setMinRating(r)} />}
 
       <InfiniteScroll
         dataLength={movies.length}
@@ -55,19 +70,11 @@ export default function MovieGallery() {
       >
         <div className="row">
           {movies.map((movie) => (
-            <div
+            <MovieCard
               key={movie.id}
-              className="col-6 col-md-3 mb-4"
-              style={{ cursor: "pointer" }}
+              movie={movie}
               onClick={() => setSelectedMovie(movie)}
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
-                className="img-fluid rounded shadow"
-              />
-              <p className="text-white mt-2">{movie.title}</p>
-            </div>
+            />
           ))}
         </div>
       </InfiniteScroll>
