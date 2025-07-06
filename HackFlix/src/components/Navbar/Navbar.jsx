@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
-import { useSearch } from "./Search/SearchContext.jsx";
+import { useSearch } from "../Search/SearchContext.jsx"; 
 import { useNavigate } from "react-router-dom";
-
+import "./NavBar.css";
 function NavBar() {
   const { searchTerm, setSearchTerm } = useSearch();
   const navigate = useNavigate();
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+  const handleOnChange = (element) => {
+    setSearchTerm(element);
+    if (window.location.pathname !== "/") {
       navigate("/");
     }
   };
@@ -45,7 +46,7 @@ function NavBar() {
             <li className="nav-item">
               <Link
                 className="nav-link"
-                to="/Generos"
+                to="/generos"
                 onClick={() => setSearchTerm("")}
               >
                 Generos
@@ -58,8 +59,7 @@ function NavBar() {
                 className="form-control"
                 placeholder="Buscar..."
                 aria-label="Buscar"
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onChange={(e) => handleOnChange(e.target.value)}
                 value={searchTerm}
               />
             </li>

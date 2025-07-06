@@ -7,18 +7,16 @@ export default function MovieCard({ movie, onClick }) {
 
   return (
     <div
-      className="col-6 col-md-3 mb-4"
-      style={{ cursor: "pointer" }}
+      className="col-6 col-md-3 mb-4 clickable-card"
       onClick={onClick}
     >
       <div className="position-relative">
-        {hasImage ? (
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-            className="img-fluid rounded shadow"
-            onLoad={() => setImageLoaded(true)}
-            style={{ display: imageLoaded ? "block" : "none" }}
+      {hasImage ? (
+    <img
+      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+      alt={movie.title}
+      className={`img-fluid rounded shadow ${imageLoaded ? "visible-image" : "hidden-image"}`}
+      onLoad={() => setImageLoaded(true)}
           />
         ) : (
           <div

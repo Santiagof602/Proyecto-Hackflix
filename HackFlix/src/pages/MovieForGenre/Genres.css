@@ -6,15 +6,19 @@
   }
   
   .genre-card {
-    position: relative;
-    height: 250px;
+    background-image: var(--bg-url);
     background-size: cover;
     background-position: center;
-    border-radius: 8px;
+    height: 250px;
+    border-radius: 10px;
     cursor: pointer;
+    position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: flex-end;
     transition: transform 0.3s ease;
   }
+  
   
   .genre-card:hover {
     transform: scale(1.05);
@@ -37,3 +41,29 @@
     font-size: 2rem;
     font-weight: bold;
   }
+
+  .genre-card {
+  background-image: var(--bg-url);
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  transition: transform 0.2s ease;
+}
+
+.genre-card:hover {
+  transform: scale(1.03);
+}
+
+.genre-overlay {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  text-align: center;
+  color: white;
+}

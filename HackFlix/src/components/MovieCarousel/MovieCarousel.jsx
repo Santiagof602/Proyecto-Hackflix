@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./MovieCarousel.css";
-import MovieModal from "./MovieModal";
+import MovieModal from "../MovieModal/MovieModal";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const API_URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=28&language=es-ES&page=1`;
+const today = new Date().toISOString().split('T')[0];
+
+const API_URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=release_date.desc&language=es-ES&release_date.lte=${today}&page=1`;
 
 const MovieCarousel = () => {
   const [movies, setMovies] = useState([]);
-
+  
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
@@ -32,7 +34,7 @@ const MovieCarousel = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-white mb-3">Películas de Acción</h2>
+        <button className="banner-button">MAS RECIENTES ▶</button>
       <div
         id="movieCarousel"
         className="carousel slide"

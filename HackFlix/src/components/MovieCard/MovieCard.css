@@ -22,3 +22,15 @@
         transform: rotate(360deg);
     }
 }
+
+.clickable-card {
+    cursor: pointer;
+  }
+
+  .visible-image {
+        display: block;
+    }
+
+    .hidden-image {
+        display: none;
+    }

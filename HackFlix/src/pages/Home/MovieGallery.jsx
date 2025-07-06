@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import RatingFilter from "./RatingFilter";
-import MovieModal from "./MovieModal";
 import "./MovieGallery.css";
-import { useSearch } from "./Search/SearchContext.jsx";
-import MovieCard from "./MovieCard/MovieCard.jsx";
-
+import InfiniteScroll from "react-infinite-scroll-component";
+import RatingFilter from "../../components/RatingFilter/RatingFilter.jsx";
+import MovieModal from "../../components/MovieModal/MovieModal.jsx";
+import { useSearch } from "../../components/Search/SearchContext.jsx";
+import MovieCard from "../../components/MovieCard/MovieCard.jsx";
+import Banner from "../../components/Banner/Banner"
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 export default function MovieGallery({ genreId = null}) {
@@ -55,7 +55,7 @@ export default function MovieGallery({ genreId = null}) {
 
   return (
     <div className="movie-gallery container py-4">
-
+      <Banner/>
       {searchTerm.trim() ? <h2 className="text-white">Resultados para "{searchTerm}"</h2>
       : !genreId && <RatingFilter onChange={(r) => setMinRating(r)} />}
 

@@ -1,9 +1,9 @@
-import Navbar from "./components/Navbar";
-import MovieGallery from "./components/MovieGallery";
-import MovieDetails from "./components/MovieDetails";
-import NotFound from "./components/NotFound";
-import Genres from "./components/MovieForGenre/Generes";
-import MoviesByGenre from "./components/MovieForGenre/MoviesForGenre";
+import Navbar from "./components/Navbar/Navbar";
+import MovieGallery from "./pages/Home/MovieGallery";
+import MovieDetails from "./pages/Home/MovieDetails";
+import NotFound from "./components/Error404/NotFound";
+import Genres from "./pages/MovieForGenre/Generes";
+import MoviesByGenre from "./pages/MovieForGenre/MoviesForGenre";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
         <Route path="/pelicula/:id" element={<MovieDetails />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/generos" element={<Genres />} />
-        <Route path="/genero/:id" element={<MoviesByGenre />} />
+        <Route path="/generos/:id" element={<MoviesByGenre />} />
       </Routes>
     </BrowserRouter>
   );
