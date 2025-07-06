@@ -4,6 +4,7 @@ import RatingFilter from "./RatingFilter";
 import MovieModal from "./MovieModal";
 import "./MovieGallery.css";
 import { useSearch } from "./Search/SearchContext.jsx";
+import MovieCard from "./MovieCard/MovieCard.jsx";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -30,7 +31,9 @@ export default function MovieGallery() {
   const fetchMovies = async (pageToFetch, rating) => {
     let url;
     if (searchTerm.trim()) {
-      url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&query=${encodeURIComponent(searchTerm)}`;
+      url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&query=${encodeURIComponent(
+        searchTerm
+      )}`;
     } else {
       url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&vote_average.gte=${rating}`;
     }
@@ -48,7 +51,6 @@ export default function MovieGallery() {
 
   return (
     <div className="movie-gallery container py-4">
-      <h2 className="text-white mb-4">Películas</h2>
       <RatingFilter onChange={(r) => setMinRating(r)} />
 
       <InfiniteScroll
@@ -62,19 +64,11 @@ export default function MovieGallery() {
       >
         <div className="row">
           {movies.map((movie) => (
-            <div
+            <MovieCard
               key={movie.id}
-              className="col-6 col-md-3 mb-4"
-              style={{ cursor: "pointer" }}
+              movie={movie}
               onClick={() => setSelectedMovie(movie)}
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
-                className="img-fluid rounded shadow"
-              />
-              <p className="text-white mt-2">{movie.title}</p>
-            </div>
+            />
           ))}
         </div>
       </InfiniteScroll>
