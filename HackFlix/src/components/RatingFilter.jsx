@@ -8,7 +8,7 @@ function RatingFilter({ onChange }) {
 
   return (
     <div className="text-center mb-4">
-      <h5 className="text-white">Filtrar por rating:</h5>
+      <h5 className="text-white">Filtrar por rating mínimo:</h5>
       <div className="d-flex justify-content-center align-items-center">
         <Rating onClick={handleRatingChange} size={25} allowFraction={false} />
         <span className="ms-2 text-white"></span>

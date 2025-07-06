@@ -8,7 +8,7 @@ import MovieCard from "./MovieCard/MovieCard.jsx";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-export default function MovieGallery() {
+export default function MovieGallery({ genreId = null}) {
   const { searchTerm } = useSearch();
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
@@ -18,7 +18,7 @@ export default function MovieGallery() {
 
   useEffect(() => {
     resetAndFetch();
-  }, [minRating, searchTerm]);
+  }, [minRating, searchTerm, genreId]);
 
   const resetAndFetch = async () => {
     setPage(1);
@@ -30,13 +30,17 @@ export default function MovieGallery() {
 
   const fetchMovies = async (pageToFetch, rating) => {
     let url;
+
     if (searchTerm.trim()) {
       url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&query=${encodeURIComponent(
         searchTerm
       )}`;
+    } else if (genreId) {
+      url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&with_genres=${genreId}`;
     } else {
       url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&page=${pageToFetch}&vote_average.gte=${rating}`;
     }
+
     const res = await fetch(url);
     return await res.json();
   };
@@ -51,7 +55,9 @@ export default function MovieGallery() {
 
   return (
     <div className="movie-gallery container py-4">
-      <RatingFilter onChange={(r) => setMinRating(r)} />
+
+      {searchTerm.trim() ? <h2 className="text-white">Resultados para "{searchTerm}"</h2>
+      : !genreId && <RatingFilter onChange={(r) => setMinRating(r)} />}
 
       <InfiniteScroll
         dataLength={movies.length}

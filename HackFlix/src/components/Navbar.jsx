@@ -1,8 +1,18 @@
 import { Link } from "react-router-dom";
 import { useSearch } from "./Search/SearchContext.jsx";
+import { useNavigate } from "react-router-dom";
+
 
 function NavBar() {
   const { setSearchTerm } = useSearch();
+  const navigate = useNavigate();
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      navigate("/");
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -42,6 +52,7 @@ function NavBar() {
                   placeholder="Buscar..."
                   aria-label="Buscar"
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
             </li>
           </ul>
