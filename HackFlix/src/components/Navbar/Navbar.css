@@ -1,41 +1,66 @@
-.nav-search-bar {
-    display: flex;
-    align-items: center;
-    background-color: #1a1a1a;
-    border-radius: 4px;
-    overflow: hidden;
-    height: 40px;
-    width: 250px; /* Ajustable */
-  }
-  
-  .nav-search-input {
-    flex: 1;
-    background-color: transparent;
-    border: none;
-    padding: 0 0.75rem;
-    color: white;
-    font-size: 1rem;
-  }
-  
-  .nav-search-input::placeholder {
-    color: #bbb;
-  }
-  
-  .nav-search-button {
-    background-color: #ffd700;
-    border: none;
-    padding: 0 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-  
-  .nav-search-button i {
-    font-size: 1rem;
-    color: black;
-  }
+.custom-navbar {
+  background-color: #1f1f1f;
+  padding: 0.75rem 1rem;
+  color: white;
+}
+
+.custom-navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.custom-navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.custom-navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+.custom-navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.custom-nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.custom-nav-link:hover {
+  opacity: 1;
+}
+
+.custom-search-container {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.custom-search-input {
+  border: none;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  outline: none;
+  width: 200px;
+}
+
 
 /* buscador del navbar */
 .nav-search-bar {
@@ -48,3 +73,39 @@
     width: 250px; 
   }
   
+  .navbar .form-control {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  @media (max-width: 992px) {
+    .navbar .nav-item input.form-control {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .custom-navbar-toggle {
+      display: block;
+    }
+  
+    .custom-navbar-links {
+      flex-direction: column;
+      width: 100%;
+      display: none;
+      margin-top: 0.75rem;
+    }
+  
+    .custom-navbar-links.open {
+      display: flex;
+    }
+  
+    .custom-search-input {
+      width: 100%;
+    }
+  
+    .custom-search-container {
+      width: 100%;
+    }
+  }
